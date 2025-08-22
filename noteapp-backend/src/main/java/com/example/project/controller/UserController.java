@@ -4,7 +4,7 @@ import com.example.project.common.Result;
 import com.example.project.dto.form.UserLoginForm;
 import com.example.project.dto.vo.UserLoginVO;
 import com.example.project.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

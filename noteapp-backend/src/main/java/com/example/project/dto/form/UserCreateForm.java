@@ -1,6 +1,6 @@
 package com.example.project.dto.form;
 
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 import lombok.Data;
 
 /** 新增用户入参 */
