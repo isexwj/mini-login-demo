@@ -5,5 +5,4 @@ import com.example.project.dto.vo.UserLoginVO;
 
 public interface UserService {
     UserLoginVO login(UserLoginForm form);
-
 }

@@ -5,11 +5,19 @@ import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
+import Note from '../views/Note.vue'
+
 const routes = [
   {
     path: '/',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/note',
+    name: 'Note',
+    component: Note,
+    meta: { requiresAuth: true }
   },
 ]
 
