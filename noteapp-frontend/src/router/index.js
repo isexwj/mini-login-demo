@@ -5,11 +5,19 @@ import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
+import Note from '../views/Note.vue'
+
 const routes = [
   {
     path: '/',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/note',
+    name: 'Note',
+    component: Note,
+    meta: { requiresAuth: true }
   },
 ]
 
@@ -28,7 +36,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/')
   } else if (to.path === '/' && isAuthenticated) {
-    next('/home')
+    next('/note')
   } else {
     next()
   }

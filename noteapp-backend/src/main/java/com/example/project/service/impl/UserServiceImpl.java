@@ -6,6 +6,7 @@ import com.example.project.dto.vo.UserLoginVO;
 import com.example.project.entity.User;
 import com.example.project.mapper.UserMapper;
 import com.example.project.service.UserService;
+import com.example.project.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.project.dto.form.UserLoginForm;
@@ -15,6 +16,7 @@ import com.example.project.dto.form.UserLoginForm;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final JwtUtils jwtUtils;
 
     @Override
     public UserLoginVO login(UserLoginForm form) {
@@ -27,10 +29,14 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("用户名或密码错误");
         }
 
+        // 3. 生成token
+        String token = jwtUtils.generateToken(user.getId());
+
         // 4. 返回登录结果
         UserLoginVO vo = new UserLoginVO();
         vo.setUserId(user.getId());
         vo.setUsername(user.getUsername());
+        vo.setToken(token);
         return vo;
     }
 }

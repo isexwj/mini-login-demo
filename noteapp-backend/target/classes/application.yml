@@ -3,6 +3,11 @@ spring:
     url: jdbc:mysql://localhost:3306/demo?useSSL=true&serverTimezone=UTC&characterEncoding=utf8
     username: root
     password: tiger123456
+
+# JWT配置
+jwt:
+  secret: 8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb  # JWT密钥
+  expiration: 86400000  # token有效期（毫秒）= 24小时
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
