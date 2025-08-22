@@ -14,8 +14,17 @@ const httpClient = axios.create({
 // 请求拦截器 - 自动添加认证token
 httpClient.interceptors.request.use(
   (config) => {
-    const token = authUtils.getAuthData().token;
+    let token = authUtils.getAuthData().token;
     if (token) {
+      // 防御性处理：移除字符串两端可能存在的引号，并去掉意外存在的 'Bearer ' 前缀
+      try {
+        token = String(token).replace(/^"|"$/g, '');
+      } catch (e) {
+        token = String(token);
+      }
+      if (token.startsWith('Bearer ')) {
+        token = token.substring(7);
+      }
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
