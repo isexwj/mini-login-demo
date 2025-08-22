@@ -15,8 +15,6 @@ public class UserController {
     private final UserService userService;
 
     /** 用户登录 */
-    /** 用户登录 */
-    /** 用户登录 */
     @PostMapping("/login")
     public Result<UserLoginVO> login(@Valid @RequestBody UserLoginForm form) {
         return Result.ok(userService.login(form));
