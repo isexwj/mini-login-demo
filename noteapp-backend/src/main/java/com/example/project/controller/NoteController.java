@@ -17,6 +17,7 @@ import java.util.List;
 public class NoteController {
     private final NoteService noteService;
 
+    /*注释*/
     @Operation(summary = "获取笔记列表")
     @GetMapping
     public Result<List<Note>> getNoteList() {
