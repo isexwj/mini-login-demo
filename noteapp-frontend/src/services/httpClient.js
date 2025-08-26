@@ -25,6 +25,21 @@ httpClient.interceptors.request.use(
       if (token.startsWith('Bearer ')) {
         token = token.substring(7);
       }
+      // 本地检查 token exp，如果可解析且已过期，清除并跳转登录
+      try {
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          if (payload.exp && payload.exp < Date.now() / 1000) {
+            authUtils.clearAuthData();
+            window.location.href = '/';
+            throw new Error('token 本地已过期，已跳转登录');
+          }
+        }
+      } catch (e) {
+        // 解析失败则忽略，由后端做最终校验
+      }
+
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
