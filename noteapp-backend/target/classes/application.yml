@@ -24,3 +24,8 @@ springdoc:
     path: /v3/api-docs      # OpenAPI 文档的 JSON 路径
   default-produces-media-type: application/json # 默认响应类型
   default-consumes-media-type: application/json # 默认请求类型
+
+deepseek:
+  api-key: sk-xxx
+  base-url: https://api.deepseek.com/v1/chat/completions
+  model: deepseek-chat

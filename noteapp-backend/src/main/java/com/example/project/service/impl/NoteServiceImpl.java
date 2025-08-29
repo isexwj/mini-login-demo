@@ -5,6 +5,8 @@ import com.example.project.common.ex.BusinessException;
 import com.example.project.entity.Note;
 import com.example.project.mapper.NoteMapper;
 import com.example.project.service.NoteService;
+import com.example.project.service.UserService;
+import com.example.project.utils.AISummaryUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteServiceImpl implements NoteService {
     private final NoteMapper noteMapper;
+    private final AISummaryUtil summaryUtil;
 
     @Override
     public List<Note> getNoteList() {
@@ -87,5 +90,30 @@ public class NoteServiceImpl implements NoteService {
         }
 
         noteMapper.deleteById(id);
+    }
+
+    @Override
+    public String summarizeNote(Long id) {
+        // 1. 获取当前用户 ID
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Long userId = (Long) attributes.getRequest().getAttribute("X-User-Id");
+
+        // 2. 查笔记，校验权限
+        Note existingNote = noteMapper.selectOne(new LambdaQueryWrapper<Note>()
+                .eq(Note::getId, id)
+                .eq(Note::getUserId, userId));
+        if (existingNote == null) {
+            throw new BusinessException("笔记不存在");
+        }
+
+        // 3. 调用总结逻辑
+        String summary = summaryUtil.summarize(existingNote.getContent());
+
+        // 4. 更新数据库
+        existingNote.setSummary(summary);
+        noteMapper.updateById(existingNote);
+
+        // 5. 返回总结
+        return summary;
     }
 }

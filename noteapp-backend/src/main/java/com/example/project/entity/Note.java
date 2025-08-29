@@ -18,4 +18,6 @@ public class Note {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+    private String summary;
 }

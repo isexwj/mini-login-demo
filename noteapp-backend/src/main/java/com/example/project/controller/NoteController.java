@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "笔记管理", description = "笔记相关接口")
 @RestController
@@ -46,5 +48,14 @@ public class NoteController {
     public Result<Void> deleteNote(@PathVariable Long id) {
         noteService.deleteNote(id);
         return Result.ok();
+    }
+
+    @Operation(summary = "AI总结笔记")
+    @PostMapping("/{id}/summary")
+    public Result<Map<String, String>> summarizeNote(@PathVariable Long id) {
+        String summary = noteService.summarizeNote(id);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("summary", summary);
+        return Result.ok(resp);
     }
 }

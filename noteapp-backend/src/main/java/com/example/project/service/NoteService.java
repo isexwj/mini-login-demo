@@ -9,4 +9,5 @@ public interface NoteService {
     Note createNote(Note note);
     Note updateNote(Long id, Note note);
     void deleteNote(Long id);
+    String summarizeNote(Long id);
 }
