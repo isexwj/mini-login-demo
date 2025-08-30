@@ -13,10 +13,10 @@ public class Note {
     private String content;
     private Long userId;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @TableField(insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime updateTime;
 
     private String summary;

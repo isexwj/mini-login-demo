@@ -29,13 +29,14 @@
                             <el-input v-model="selectedNote.title" placeholder="请输入标题" class="note-title-input"
                                 size="medium" />
                             <el-button type="primary" size="mini" @click="saveNote">保存</el-button>
-                            <el-button type="success" size="mini" @click="summarizeNote">AI总结</el-button>
+                            <el-button type="success" size="mini" @click="summarizeNote" :loading="loadingSummary">{{ loadingSummary ? '正在总结...' : 'AI总结' }}</el-button>
                         </div>
-                        <mavon-editor v-model="selectedNote.content" style="height: 60vh;" />
+                        <mavon-editor v-model="selectedNote.content" />
                         <!-- 总结结果展示区域 -->
                         <el-card v-if="selectedNote.summary" class="note-summary" style="margin-top: 15px;">
                             <h3>总结</h3>
-                            <p>{{ selectedNote.summary }}</p>
+                            <mavon-editor :value="selectedNote.summary" :editable="false" :subfield="false"
+                                defaultOpen="preview" boxShadowStyle="none" style="border: none; box-shadow: none;" />
                         </el-card>
                     </div>
                     <div v-else class="empty-note">
@@ -57,6 +58,7 @@
                 notes: [],
                 loading: false,
                 selectedNoteId: null,
+                loadingSummary: false,
             };
         },
         computed: {
@@ -93,8 +95,12 @@
                     return;
                 }
 
+                this.loadingSummary = true;
+
                 try {
-                    const result = await http.post(`/notes/${this.selectedNote.id}/summary`);
+                    const result = await http.post(`/notes/${this.selectedNote.id}/summary`, {}, {
+                        timeout: 60000, // 60秒超时
+                    });
                     if (result.code === 200) {
                         this.selectedNote.summary = result.data.summary;
                         this.$message.success('总结成功');
@@ -104,6 +110,8 @@
                 } catch (error) {
                     console.error('总结笔记错误:', error);
                     this.$message.error('总结失败');
+                } finally {
+                    this.loadingSummary = false;
                 }
             },
 

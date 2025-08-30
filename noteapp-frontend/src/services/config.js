@@ -3,7 +3,7 @@ export const config = {
   // API配置
   api: {
     baseUrl: process.env.VUE_APP_API_URL || '/api',
-    timeout: 10000,
+    timeout: 10000  ,
     retryCount: 2
   },
   
